@@ -16,40 +16,40 @@ module('Integration | Component | map', function (hooks) {
       @height="120"
     />`);
 
-assert
-.dom('.map img')
-.exists()
-.hasAttribute('alt', 'Map image at coordinates 37.7797,-122.4184')
-.hasAttribute('src')
-.hasAttribute('width', '150')
-.hasAttribute('height', '120');
+    assert
+      .dom('.map img')
+      .exists()
+      .hasAttribute('alt', 'Map image at coordinates 37.7797,-122.4184')
+      .hasAttribute('src')
+      .hasAttribute('width', '150')
+      .hasAttribute('height', '120');
 
-let { src } = find('.map img');
-let token = encodeURIComponent(ENV.MAPBOX_ACCESS_TOKEN);
+    let { src } = find('.map img');
+    let token = encodeURIComponent(ENV.MAPBOX_ACCESS_TOKEN);
 
-assert.ok(
-  src.startsWith('https://api.mapbox.com/'),
-  'the src starts with "https://api.mapbox.com/"'
-);
+    assert.ok(
+      src.startsWith('https://api.mapbox.com/'),
+      'the src starts with "https://api.mapbox.com/"'
+    );
 
-assert.ok(
-  src.includes('-122.4184,37.7797,10'),
-  'the src should include the lng,lat,zoom parameter'
-);
+    assert.ok(
+      src.includes('-122.4184,37.7797,10'),
+      'the src should include the lng,lat,zoom parameter'
+    );
 
-assert.ok(
-  src.includes('150x120@2x'),
-  'the src should include the width,height and @2x parameter'
-);
+    assert.ok(
+      src.includes('150x120@2x'),
+      'the src should include the width,height and @2x parameter'
+    );
 
-assert.ok(
-  src.includes(`access_token=${token}`),
-  'the src should include the escaped access token'
-);
-});
+    assert.ok(
+      src.includes(`access_token=${token}`),
+      'the src should include the escaped access token'
+    );
+  });
 
-test('the default alt attribute can be overridden', async function (assert) {
-await render(hbs`<Map
+  test('the default alt attribute can be overridden', async function (assert) {
+    await render(hbs`<Map
   @lat="37.7797"
   @lng="-122.4184"
   @zoom="10"
@@ -58,11 +58,11 @@ await render(hbs`<Map
   alt="A map of San Francisco"
 />`);
 
-assert.dom('.map img').hasAttribute('alt', 'A map of San Francisco');
-});
+    assert.dom('.map img').hasAttribute('alt', 'A map of San Francisco');
+  });
 
-test('the src, width and height attributes cannot be overridden', async function (assert) {
-await render(hbs`<Map
+  test('the src, width and height attributes cannot be overridden', async function (assert) {
+    await render(hbs`<Map
   @lat="37.7797"
   @lng="-122.4184"
   @zoom="10"
@@ -73,11 +73,10 @@ await render(hbs`<Map
   height="300"
 />`);
 
-assert
-  .dom('.map img')
-  .hasAttribute('src', /^https:\/\/api\.mapbox\.com\//)
-  .hasAttribute('width', '150')
-  .hasAttribute('height', '120');
-  
+    assert
+      .dom('.map img')
+      .hasAttribute('src', /^https:\/\/api\.mapbox\.com\//)
+      .hasAttribute('width', '150')
+      .hasAttribute('height', '120');
   });
 });
