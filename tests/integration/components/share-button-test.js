@@ -10,13 +10,12 @@ class MockRouterService extends Service {
   }
 }
 
-
 module('Integration | Component | share-button', function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
     this.owner.register('service:router', MockRouterService);
-  
+
     this.tweetParam = (param) => {
       let link = find('a');
       let url = new URL(link.href);
@@ -28,13 +27,13 @@ module('Integration | Component | share-button', function (hooks) {
     await render(hbs`<ShareButton>Tweet this!</ShareButton>`);
 
     assert
-    .dom('a')
-    .hasAttribute('target', '_blank')
-    .hasAttribute('rel', 'external nofollow noopener noreferrer')
-    .hasAttribute('href', /^https:\/\/twitter\.com\/intent\/tweet/)
-    .hasClass('share')
-    .hasClass('button')
-    .containsText('Tweet this!');
+      .dom('a')
+      .hasAttribute('target', '_blank')
+      .hasAttribute('rel', 'external nofollow noopener noreferrer')
+      .hasAttribute('href', /^https:\/\/twitter\.com\/intent\/tweet/)
+      .hasClass('share')
+      .hasClass('button')
+      .containsText('Tweet this!');
 
     assert.equal(
       this.tweetParam('url'),
