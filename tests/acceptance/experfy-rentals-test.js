@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, visit, currentURL } from '@ember/test-helpers';
+import { click, find, visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 
 module('Acceptance | experfy rentals', function (hooks) {
@@ -18,7 +18,7 @@ module('Acceptance | experfy rentals', function (hooks) {
 
     assert.equal(currentURL(), '/about');
   });
-  
+
   test('viewing the details of a rental property', async function (assert) {
     await visit('/');
     assert.dom('.rental').exists({ count: 3 });
@@ -35,8 +35,18 @@ module('Acceptance | experfy rentals', function (hooks) {
     assert.dom('h1').containsText('ExperfyRentals');
     assert.dom('h2').containsText('Grand Old Mansion');
     assert.dom('.rental.detailed').exists();
-  });
+    assert.dom('.share.button').hasText('Share on Twitter');
 
+    let button = find('.share.button');
+
+    let tweetURL = new URL(button.href);
+    assert.equal(tweetURL.host, 'twitter.com');
+
+    assert.equal(
+      tweetURL.searchParams.get('url'),
+      `${window.location.origin}/rentals/grand-old-mansion`
+    );
+  });
 
   test('visiting /about', async function (assert) {
     await visit('/about');
